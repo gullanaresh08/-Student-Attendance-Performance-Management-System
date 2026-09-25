@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Marks{% endblock %}
+{% block content %}
+<h1>Marks</h1>
+
+<form method="POST" class="form-box">
+    <label>Student</label>
+    <select name="student_id" required>
+        <option value="">-- Select Student --</option>
+        {% for s in students %}
+        <option value="{{ s.id }}">{{ s.name }} ({{ s.roll_no }})</option>
+        {% endfor %}
+    </select>
+
+    <label>Subject</label>
+    <input type="text" name="subject" placeholder="e.g. Mathematics" required>
+
+    <label>Marks (0-100)</label>
+    <input type="number" step="0.01" min="0" max="100" name="marks" required>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Marks</button>
+    </div>
+</form>
+
+<h2>Marks by Student</h2>
+<table class="data-table">
+    <thead><tr><th>Roll No</th><th>Name</th><th>Subjects &amp; Marks</th><th>Average</th></tr></thead>
+    <tbody>
+    {% for sm in student_marks %}
+        <tr>
+            <td>{{ sm.roll_no }}</td>
+            <td>{{ sm.name }}</td>
+            <td>
+                {% for row in sm.subjects %}
+                    <span class="tag">{{ row.subject }}: {{ row.marks }}</span>
+                {% else %}
+                    <span class="muted">No marks yet</span>
+                {% endfor %}
+            </td>
+            <td>{{ sm.average }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4" class="muted">No students yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

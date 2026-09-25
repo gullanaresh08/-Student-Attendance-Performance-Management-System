@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="login-box">
+    <h1>🔐 Login</h1>
+    <p class="subtitle">Student Attendance &amp; Performance Management System</p>
+    <form method="POST">
+        <label>Username</label>
+        <input type="text" name="username" required autofocus>
+        <label>Password</label>
+        <input type="password" name="password" required>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p class="hint">Demo credentials: <b>admin</b> / <b>admin123</b> (change before real deployment)</p>
+</div>
+{% endblock %}

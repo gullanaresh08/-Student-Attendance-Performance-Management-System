@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="cards">
+    <div class="card">
+        <div class="card-value">{{ total_students }}</div>
+        <div class="card-label">Total Students</div>
+    </div>
+    <div class="card">
+        <div class="card-value">{{ overall_attendance }}%</div>
+        <div class="card-label">Overall Attendance</div>
+    </div>
+    <div class="card">
+        <div class="card-value">{{ overall_avg_marks }}</div>
+        <div class="card-label">Average Marks</div>
+    </div>
+    <div class="card card-warning">
+        <div class="card-value">{{ at_risk_count }}</div>
+        <div class="card-label">At-Risk Students</div>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>Subject-wise Average Marks</h2>
+    {% if subjects %}
+    <canvas id="subjectChart" height="100"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script>
+        const ctx = document.getElementById('subjectChart');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ subjects | tojson }},
+                datasets: [{
+                    label: 'Average Marks',
+                    data: {{ subject_averages | tojson }},
+                    backgroundColor: '#4f6ef7'
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true, max: 100 } }
+            }
+        });
+    </script>
+    {% else %}
+    <p class="muted">No marks entered yet. Add marks to see the subject-wise chart.</p>
+    {% endif %}
+</div>
+
+<div class="quick-links">
+    <a href="{{ url_for('students') }}" class="btn">Manage Students</a>
+    <a href="{{ url_for('attendance') }}" class="btn">Take Attendance</a>
+    <a href="{{ url_for('marks') }}" class="btn">Enter Marks</a>
+    <a href="{{ url_for('performance') }}" class="btn">View Performance</a>
+</div>
+{% endblock %}

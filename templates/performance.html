@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Performance{% endblock %}
+{% block content %}
+<h1>Performance Analysis</h1>
+<p class="muted">Flagged as At Risk when attendance is below {{ attendance_threshold }}% or average marks are below {{ marks_threshold }}.</p>
+
+<table class="data-table">
+    <thead>
+        <tr><th>Roll No</th><th>Name</th><th>Attendance %</th><th>Average Marks</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+    {% for r in rows %}
+        <tr class="{{ 'row-risk' if r.status == 'At Risk' else '' }}">
+            <td>{{ r.roll_no }}</td>
+            <td>{{ r.name }}</td>
+            <td>{{ r.attendance }}%</td>
+            <td>{{ r.average_marks }}</td>
+            <td><span class="badge {{ 'badge-danger' if r.status == 'At Risk' else 'badge-success' }}">{{ r.status }}</span></td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5" class="muted">No students yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="panel">
+    <h2>⚠️ Early Warning — At-Risk Students</h2>
+    {% if at_risk %}
+    <ul class="risk-list">
+        {% for r in at_risk %}
+        <li><b>{{ r.name }}</b> ({{ r.roll_no }}) — Attendance: {{ r.attendance }}%, Avg Marks: {{ r.average_marks }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted">No students are currently at risk. 🎉</p>
+    {% endif %}
+</div>
+{% endblock %}
